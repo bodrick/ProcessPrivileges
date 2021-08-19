@@ -1,5 +1,4 @@
 using System.ComponentModel;
-using System.Runtime.ConstrainedExecution;
 using System.Runtime.InteropServices;
 using Microsoft.Win32.SafeHandles;
 
@@ -8,8 +7,7 @@ namespace ProcessPrivileges
     /// <summary>Handle to an access token.</summary>
     public sealed class AccessTokenHandle : SafeHandleZeroOrMinusOneIsInvalid
     {
-        internal AccessTokenHandle(ProcessHandle processHandle, TokenAccessRights tokenAccessRights)
-            : base(true)
+        internal AccessTokenHandle(ProcessHandle processHandle, TokenAccessRights tokenAccessRights) : base(true)
         {
             if (!NativeMethods.OpenProcessToken(processHandle, tokenAccessRights, ref handle))
             {
@@ -20,7 +18,6 @@ namespace ProcessPrivileges
         /// <summary>Releases the handle.</summary>
         /// <returns>Value indicating if the handle released successfully.</returns>
         /// <exception cref="Win32Exception"></exception>
-        [ReliabilityContract(Consistency.WillNotCorruptState, Cer.MayFail)]
         protected override bool ReleaseHandle()
         {
             if (!NativeMethods.CloseHandle(handle))

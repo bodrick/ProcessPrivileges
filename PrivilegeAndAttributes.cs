@@ -39,7 +39,7 @@ namespace ProcessPrivileges
         /// <summary>Indicates whether this instance and a specified object are equal.</summary>
         /// <param name="obj">Another object to compare to.</param>
         /// <returns>Value indicating whether this instance and a specified object are equal.</returns>
-        public override bool Equals(object obj) => obj is PrivilegeAttributes ? Equals((PrivilegeAttributes)obj) : false;
+        public override bool Equals(object obj) => obj is PrivilegeAttributes attributes && Equals(attributes);
 
         /// <summary>Indicates whether this instance and another instance are equal.</summary>
         /// <param name="other">Another instance to compare to.</param>

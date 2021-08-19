@@ -1,5 +1,4 @@
 using System;
-using System.Runtime.ConstrainedExecution;
 using System.Runtime.InteropServices;
 using System.Security;
 using System.Text;
@@ -27,7 +26,6 @@ namespace ProcessPrivileges
             [In, Out] ref int returnLength);
 
         [DllImport(Kernel32, SetLastError = true),
-        ReliabilityContract(Consistency.WillNotCorruptState, Cer.MayFail),
         SuppressUnmanagedCodeSecurity]
         [return: MarshalAs(UnmanagedType.Bool)]
         internal static extern bool CloseHandle(

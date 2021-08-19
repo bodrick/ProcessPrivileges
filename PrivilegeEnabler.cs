@@ -49,11 +49,9 @@ namespace ProcessPrivileges
     /// </remarks>
     public sealed class PrivilegeEnabler : IDisposable
     {
-        private static readonly Dictionary<Process, AccessTokenHandle> AccessTokenHandles =
-            new Dictionary<Process, AccessTokenHandle>();
+        private static readonly Dictionary<Process, AccessTokenHandle> AccessTokenHandles = new();
 
-        private static readonly Dictionary<Privilege, PrivilegeEnabler> SharedPrivileges =
-                    new Dictionary<Privilege, PrivilegeEnabler>();
+        private static readonly Dictionary<Privilege, PrivilegeEnabler> SharedPrivileges = new();
 
         private AccessTokenHandle _accessTokenHandle;
 
@@ -67,14 +65,12 @@ namespace ProcessPrivileges
         /// <param name="accessTokenHandle">The <see cref="AccessTokenHandle"/> for a <see cref="Process"/> on which privileges should be enabled.</param>
         /// <exception cref="InvalidOperationException">Thrown when another instance exists and has not been disposed.</exception>
         /// <permission cref="SecurityAction.LinkDemand">Requires the immediate caller to have FullTrust.</permission>
-        [PermissionSet(SecurityAction.LinkDemand, Name = "FullTrust")]
         public PrivilegeEnabler(AccessTokenHandle accessTokenHandle) => _accessTokenHandle = accessTokenHandle;
 
         /// <summary>Initializes a new instance of the PrivilegeEnabler class.</summary>
         /// <param name="process">The <see cref="Process"/> on which privileges should be enabled.</param>
         /// <exception cref="InvalidOperationException">Thrown when another instance exists and has not been disposed.</exception>
         /// <permission cref="SecurityAction.LinkDemand">Requires the immediate caller to have FullTrust.</permission>
-        [PermissionSet(SecurityAction.LinkDemand, Name = "FullTrust")]
         public PrivilegeEnabler(Process process)
         {
             lock (AccessTokenHandles)
@@ -100,7 +96,6 @@ namespace ProcessPrivileges
         /// <param name="privileges">The privileges to be enabled.</param>
         /// <exception cref="Win32Exception">Thrown when an underlying Win32 function call does not succeed.</exception>
         /// <permission cref="SecurityAction.LinkDemand">Requires the immediate caller to have FullTrust.</permission>
-        [PermissionSet(SecurityAction.LinkDemand, Name = "FullTrust")]
         public PrivilegeEnabler(AccessTokenHandle accessTokenHandle, params Privilege[] privileges)
             : this(accessTokenHandle)
         {
@@ -115,7 +110,6 @@ namespace ProcessPrivileges
         /// <param name="privileges">The privileges to be enabled.</param>
         /// <exception cref="Win32Exception">Thrown when an underlying Win32 function call does not succeed.</exception>
         /// <permission cref="SecurityAction.LinkDemand">Requires the immediate caller to have FullTrust.</permission>
-        [PermissionSet(SecurityAction.LinkDemand, Name = "FullTrust")]
         public PrivilegeEnabler(Process process, params Privilege[] privileges)
             : this(process)
         {
@@ -131,7 +125,6 @@ namespace ProcessPrivileges
         /// <summary>Disposes of an instance of the PrivilegeEnabler class.</summary>
         /// <exception cref="Win32Exception">Thrown when an underlying Win32 function call does not succeed.</exception>
         /// <permission cref="SecurityAction.Demand">Requires the call stack to have FullTrust.</permission>
-        [PermissionSet(SecurityAction.Demand, Name = "FullTrust")]
         public void Dispose()
         {
             InternalDispose();
@@ -152,7 +145,6 @@ namespace ProcessPrivileges
         /// </remarks>
         /// <exception cref="Win32Exception">Thrown when an underlying Win32 function call does not succeed.</exception>
         /// <permission cref="SecurityAction.LinkDemand">Requires the immediate caller to have FullTrust.</permission>
-        [PermissionSet(SecurityAction.LinkDemand, Name = "FullTrust")]
         public AdjustPrivilegeResult EnablePrivilege(Privilege privilege)
         {
             lock (SharedPrivileges)
@@ -169,7 +161,6 @@ namespace ProcessPrivileges
             }
         }
 
-        [PermissionSet(SecurityAction.LinkDemand, Name = "FullTrust")]
         private void InternalDispose()
         {
             if (!_disposed)

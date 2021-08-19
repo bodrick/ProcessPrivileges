@@ -46,94 +46,89 @@ namespace ProcessPrivileges
         private const string SeUndockPrivilege = "SeUndockPrivilege";
         private const string SeUnsolicitedInputPrivilege = "SeUnsolicitedInputPrivilege";
 
-        private static readonly Dictionary<Privilege, Luid> luidDictionary =
-            new Dictionary<Privilege, Luid>(PrivilegesCount);
+        private static readonly Dictionary<Privilege, Luid> LuidDictionary = new(PrivilegesCount);
 
-        private static readonly Dictionary<Privilege, string> privilegeConstantsDictionary =
-            new Dictionary<Privilege, string>(PrivilegesCount)
+        private static readonly Dictionary<Privilege, string> PrivilegeConstantsDictionary = new(PrivilegesCount)
         {
-           { Privilege.AssignPrimaryToken, SeAssignPrimaryTokenPrivilege },
-           { Privilege.Audit, SeAuditPrivilege },
-           { Privilege.Backup, SeBackupPrivilege },
-           { Privilege.ChangeNotify, SeChangeNotifyPrivilege },
-           { Privilege.CreateGlobal, SeCreateGlobalPrivilege },
-           { Privilege.CreatePageFile, SeCreatePagefilePrivilege },
-           { Privilege.CreatePermanent, SeCreatePermanentPrivilege },
-           { Privilege.CreateSymbolicLink, SeCreateSymbolicLinkPrivilege },
-           { Privilege.CreateToken, SeCreateTokenPrivilege },
-           { Privilege.Debug, SeDebugPrivilege },
-           { Privilege.EnableDelegation, SeEnableDelegationPrivilege },
-           { Privilege.Impersonate, SeImpersonatePrivilege },
-           { Privilege.IncreaseBasePriority, SeIncreaseBasePriorityPrivilege },
-           { Privilege.IncreaseQuota, SeIncreaseQuotaPrivilege },
-           { Privilege.IncreaseWorkingSet, SeIncreaseWorkingSetPrivilege },
-           { Privilege.LoadDriver, SeLoadDriverPrivilege },
-           { Privilege.LockMemory, SeLockMemoryPrivilege },
-           { Privilege.MachineAccount, SeMachineAccountPrivilege },
-           { Privilege.ManageVolume, SeManageVolumePrivilege },
-           { Privilege.ProfileSingleProcess, SeProfileSingleProcessPrivilege },
-           { Privilege.Relabel, SeRelabelPrivilege },
-           { Privilege.RemoteShutdown, SeRemoteShutdownPrivilege },
-           { Privilege.Restore, SeRestorePrivilege },
-           { Privilege.Security, SeSecurityPrivilege },
-           { Privilege.Shutdown, SeShutdownPrivilege },
-           { Privilege.SyncAgent, SeSyncAgentPrivilege },
-           { Privilege.SystemEnvironment, SeSystemEnvironmentPrivilege },
-           { Privilege.SystemProfile, SeSystemProfilePrivilege },
-           { Privilege.SystemTime, SeSystemTimePrivilege },
-           { Privilege.TakeOwnership, SeTakeOwnershipPrivilege },
-           { Privilege.TrustedComputerBase, SeTcbPrivilege },
-           { Privilege.TimeZone, SeTimeZonePrivilege },
-           { Privilege.TrustedCredentialManagerAccess, SeTrustedCredManAccessPrivilege },
-           { Privilege.Undock, SeUndockPrivilege },
-           { Privilege.UnsolicitedInput, SeUnsolicitedInputPrivilege }
+            { Privilege.AssignPrimaryToken, SeAssignPrimaryTokenPrivilege },
+            { Privilege.Audit, SeAuditPrivilege },
+            { Privilege.Backup, SeBackupPrivilege },
+            { Privilege.ChangeNotify, SeChangeNotifyPrivilege },
+            { Privilege.CreateGlobal, SeCreateGlobalPrivilege },
+            { Privilege.CreatePageFile, SeCreatePagefilePrivilege },
+            { Privilege.CreatePermanent, SeCreatePermanentPrivilege },
+            { Privilege.CreateSymbolicLink, SeCreateSymbolicLinkPrivilege },
+            { Privilege.CreateToken, SeCreateTokenPrivilege },
+            { Privilege.Debug, SeDebugPrivilege },
+            { Privilege.EnableDelegation, SeEnableDelegationPrivilege },
+            { Privilege.Impersonate, SeImpersonatePrivilege },
+            { Privilege.IncreaseBasePriority, SeIncreaseBasePriorityPrivilege },
+            { Privilege.IncreaseQuota, SeIncreaseQuotaPrivilege },
+            { Privilege.IncreaseWorkingSet, SeIncreaseWorkingSetPrivilege },
+            { Privilege.LoadDriver, SeLoadDriverPrivilege },
+            { Privilege.LockMemory, SeLockMemoryPrivilege },
+            { Privilege.MachineAccount, SeMachineAccountPrivilege },
+            { Privilege.ManageVolume, SeManageVolumePrivilege },
+            { Privilege.ProfileSingleProcess, SeProfileSingleProcessPrivilege },
+            { Privilege.Relabel, SeRelabelPrivilege },
+            { Privilege.RemoteShutdown, SeRemoteShutdownPrivilege },
+            { Privilege.Restore, SeRestorePrivilege },
+            { Privilege.Security, SeSecurityPrivilege },
+            { Privilege.Shutdown, SeShutdownPrivilege },
+            { Privilege.SyncAgent, SeSyncAgentPrivilege },
+            { Privilege.SystemEnvironment, SeSystemEnvironmentPrivilege },
+            { Privilege.SystemProfile, SeSystemProfilePrivilege },
+            { Privilege.SystemTime, SeSystemTimePrivilege },
+            { Privilege.TakeOwnership, SeTakeOwnershipPrivilege },
+            { Privilege.TrustedComputerBase, SeTcbPrivilege },
+            { Privilege.TimeZone, SeTimeZonePrivilege },
+            { Privilege.TrustedCredentialManagerAccess, SeTrustedCredManAccessPrivilege },
+            { Privilege.Undock, SeUndockPrivilege },
+            { Privilege.UnsolicitedInput, SeUnsolicitedInputPrivilege }
         };
 
-        private static readonly Dictionary<string, Privilege> privilegesDictionary =
-            new Dictionary<string, Privilege>(PrivilegesCount)
+        private static readonly Dictionary<string, Privilege> PrivilegesDictionary = new(PrivilegesCount)
         {
-           { SeAssignPrimaryTokenPrivilege, Privilege.AssignPrimaryToken },
-           { SeAuditPrivilege, Privilege.Audit },
-           { SeBackupPrivilege, Privilege.Backup },
-           { SeChangeNotifyPrivilege, Privilege.ChangeNotify },
-           { SeCreateGlobalPrivilege, Privilege.CreateGlobal },
-           { SeCreatePagefilePrivilege, Privilege.CreatePageFile },
-           { SeCreatePermanentPrivilege, Privilege.CreatePermanent },
-           { SeCreateSymbolicLinkPrivilege, Privilege.CreateSymbolicLink },
-           { SeCreateTokenPrivilege, Privilege.CreateToken },
-           { SeDebugPrivilege, Privilege.Debug },
-           { SeEnableDelegationPrivilege, Privilege.EnableDelegation },
-           { SeImpersonatePrivilege, Privilege.Impersonate },
-           { SeIncreaseBasePriorityPrivilege, Privilege.IncreaseBasePriority },
-           { SeIncreaseQuotaPrivilege, Privilege.IncreaseQuota },
-           { SeIncreaseWorkingSetPrivilege, Privilege.IncreaseWorkingSet },
-           { SeLoadDriverPrivilege, Privilege.LoadDriver },
-           { SeLockMemoryPrivilege, Privilege.LockMemory },
-           { SeMachineAccountPrivilege, Privilege.MachineAccount },
-           { SeManageVolumePrivilege, Privilege.ManageVolume },
-           { SeProfileSingleProcessPrivilege, Privilege.ProfileSingleProcess },
-           { SeRelabelPrivilege, Privilege.Relabel },
-           { SeRemoteShutdownPrivilege, Privilege.RemoteShutdown },
-           { SeRestorePrivilege, Privilege.Restore },
-           { SeSecurityPrivilege, Privilege.Security },
-           { SeShutdownPrivilege, Privilege.Shutdown },
-           { SeSyncAgentPrivilege, Privilege.SyncAgent },
-           { SeSystemEnvironmentPrivilege, Privilege.SystemEnvironment },
-           { SeSystemProfilePrivilege, Privilege.SystemProfile },
-           { SeSystemTimePrivilege, Privilege.SystemTime },
-           { SeTakeOwnershipPrivilege, Privilege.TakeOwnership },
-           { SeTcbPrivilege, Privilege.TrustedComputerBase },
-           { SeTimeZonePrivilege, Privilege.TimeZone },
-           { SeTrustedCredManAccessPrivilege, Privilege.TrustedCredentialManagerAccess },
-           { SeUndockPrivilege, Privilege.Undock },
-           { SeUnsolicitedInputPrivilege, Privilege.UnsolicitedInput }
+            { SeAssignPrimaryTokenPrivilege, Privilege.AssignPrimaryToken },
+            { SeAuditPrivilege, Privilege.Audit },
+            { SeBackupPrivilege, Privilege.Backup },
+            { SeChangeNotifyPrivilege, Privilege.ChangeNotify },
+            { SeCreateGlobalPrivilege, Privilege.CreateGlobal },
+            { SeCreatePagefilePrivilege, Privilege.CreatePageFile },
+            { SeCreatePermanentPrivilege, Privilege.CreatePermanent },
+            { SeCreateSymbolicLinkPrivilege, Privilege.CreateSymbolicLink },
+            { SeCreateTokenPrivilege, Privilege.CreateToken },
+            { SeDebugPrivilege, Privilege.Debug },
+            { SeEnableDelegationPrivilege, Privilege.EnableDelegation },
+            { SeImpersonatePrivilege, Privilege.Impersonate },
+            { SeIncreaseBasePriorityPrivilege, Privilege.IncreaseBasePriority },
+            { SeIncreaseQuotaPrivilege, Privilege.IncreaseQuota },
+            { SeIncreaseWorkingSetPrivilege, Privilege.IncreaseWorkingSet },
+            { SeLoadDriverPrivilege, Privilege.LoadDriver },
+            { SeLockMemoryPrivilege, Privilege.LockMemory },
+            { SeMachineAccountPrivilege, Privilege.MachineAccount },
+            { SeManageVolumePrivilege, Privilege.ManageVolume },
+            { SeProfileSingleProcessPrivilege, Privilege.ProfileSingleProcess },
+            { SeRelabelPrivilege, Privilege.Relabel },
+            { SeRemoteShutdownPrivilege, Privilege.RemoteShutdown },
+            { SeRestorePrivilege, Privilege.Restore },
+            { SeSecurityPrivilege, Privilege.Security },
+            { SeShutdownPrivilege, Privilege.Shutdown },
+            { SeSyncAgentPrivilege, Privilege.SyncAgent },
+            { SeSystemEnvironmentPrivilege, Privilege.SystemEnvironment },
+            { SeSystemProfilePrivilege, Privilege.SystemProfile },
+            { SeSystemTimePrivilege, Privilege.SystemTime },
+            { SeTakeOwnershipPrivilege, Privilege.TakeOwnership },
+            { SeTcbPrivilege, Privilege.TrustedComputerBase },
+            { SeTimeZonePrivilege, Privilege.TimeZone },
+            { SeTrustedCredManAccessPrivilege, Privilege.TrustedCredentialManagerAccess },
+            { SeUndockPrivilege, Privilege.Undock },
+            { SeUnsolicitedInputPrivilege, Privilege.UnsolicitedInput }
         };
 
         internal static AdjustPrivilegeResult DisablePrivilege(AccessTokenHandle accessTokenHandle, Privilege privilege) => AdjustPrivilege(accessTokenHandle, privilege, PrivilegeAttributes.Disabled);
 
         internal static AdjustPrivilegeResult EnablePrivilege(AccessTokenHandle accessTokenHandle, Privilege privilege) => AdjustPrivilege(accessTokenHandle, privilege, PrivilegeAttributes.Enabled);
-
-        internal static AdjustPrivilegeResult RemovePrivilege(AccessTokenHandle accessTokenHandle, Privilege privilege) => AdjustPrivilege(accessTokenHandle, privilege, PrivilegeAttributes.Removed);
 
         internal static PrivilegeAttributes GetPrivilegeAttributes(Privilege privilege, PrivilegeAndAttributesCollection privileges)
         {
@@ -159,10 +154,10 @@ namespace ProcessPrivileges
             {
                 var luidAndAttributes = luidAndAttributesArray[i];
                 var name = GetPrivilegeName(luidAndAttributes.Luid);
-                if (privilegesDictionary.ContainsKey(name))
+                if (PrivilegesDictionary.ContainsKey(name))
                 {
                     privilegeAndAttributes.Add(new PrivilegeAndAttributes(
-                        privilegesDictionary[name],
+                        PrivilegesDictionary[name],
                         luidAndAttributes.Attributes));
                 }
             }
@@ -170,10 +165,9 @@ namespace ProcessPrivileges
             return new PrivilegeAndAttributesCollection(privilegeAndAttributes);
         }
 
-        private static AdjustPrivilegeResult AdjustPrivilege(
-            AccessTokenHandle accessTokenHandle,
-            Luid luid,
-            PrivilegeAttributes privilegeAttributes)
+        internal static AdjustPrivilegeResult RemovePrivilege(AccessTokenHandle accessTokenHandle, Privilege privilege) => AdjustPrivilege(accessTokenHandle, privilege, PrivilegeAttributes.Removed);
+
+        private static AdjustPrivilegeResult AdjustPrivilege(AccessTokenHandle accessTokenHandle, Luid luid, PrivilegeAttributes privilegeAttributes)
         {
             var newState = new TokenPrivilege
             {
@@ -208,18 +202,18 @@ namespace ProcessPrivileges
 
         private static Luid GetLuid(Privilege privilege)
         {
-            if (luidDictionary.ContainsKey(privilege))
+            if (LuidDictionary.ContainsKey(privilege))
             {
-                return luidDictionary[privilege];
+                return LuidDictionary[privilege];
             }
 
             var luid = new Luid();
-            if (!NativeMethods.LookupPrivilegeValue(string.Empty, privilegeConstantsDictionary[privilege], ref luid))
+            if (!NativeMethods.LookupPrivilegeValue(string.Empty, PrivilegeConstantsDictionary[privilege], ref luid))
             {
                 throw new Win32Exception(Marshal.GetLastWin32Error());
             }
 
-            luidDictionary.Add(privilege, luid);
+            LuidDictionary.Add(privilege, luid);
             return luid;
         }
 
@@ -258,7 +252,7 @@ namespace ProcessPrivileges
                 tokenInformationLength,
                 ref returnLength))
             {
-                return new LuidAndAttributes[0];
+                return Array.Empty<LuidAndAttributes>();
             }
 
             var lastWin32Error = Marshal.GetLastWin32Error();

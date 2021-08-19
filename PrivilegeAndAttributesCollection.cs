@@ -10,8 +10,7 @@ namespace ProcessPrivileges
     [Serializable]
     public sealed class PrivilegeAndAttributesCollection : ReadOnlyCollection<PrivilegeAndAttributes>
     {
-        internal PrivilegeAndAttributesCollection(IList<PrivilegeAndAttributes> list)
-            : base(list)
+        internal PrivilegeAndAttributesCollection(IList<PrivilegeAndAttributes> list) : base(list)
         {
         }
 

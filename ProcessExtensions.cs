@@ -126,8 +126,7 @@ namespace ProcessPrivileges
         /// <exception cref="Win32Exception">Thrown when an underlying Win32 function call does not succeed.</exception>
         /// <permission cref="SecurityAction.LinkDemand">Requires the immediate caller to have FullTrust.</permission>
         /// <remarks>The caller must have permission to query and adjust token privileges on the target process.</remarks>
-        [MethodImpl(MethodImplOptions.Synchronized),
-        PermissionSet(SecurityAction.LinkDemand, Name = "FullTrust")]
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public static AdjustPrivilegeResult DisablePrivilege(this AccessTokenHandle accessTokenHandle, Privilege privilege) => Privileges.DisablePrivilege(accessTokenHandle, privilege);
 
         /// <summary>Disables the specified <see cref="Privilege"/> on a <see cref="Process"/>.</summary>
@@ -143,8 +142,7 @@ namespace ProcessPrivileges
         ///     <para>If you are adjusting multiple privileges on a process, consider using <see cref="DisablePrivilege(AccessTokenHandle, Privilege)"/> with an access token handle for the process.</para>
         ///     <para>The caller must have permission to query and adjust token privileges on the target process.</para>
         /// </remarks>
-        [MethodImpl(MethodImplOptions.Synchronized),
-        PermissionSet(SecurityAction.LinkDemand, Name = "FullTrust")]
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public static AdjustPrivilegeResult DisablePrivilege(this Process process, Privilege privilege)
         {
             using (var accessTokenHandle = new AccessTokenHandle(
@@ -171,8 +169,7 @@ namespace ProcessPrivileges
         ///     <para>Consider using <see cref="PrivilegeEnabler"/> that enables privileges on a process in a safe way, ensuring that they are returned to their original state when an operation that requires a privilege completes.</para>
         ///     <para>The caller must have permission to query and adjust token privileges on the target process.</para>
         /// </remarks>
-        [MethodImpl(MethodImplOptions.Synchronized),
-        PermissionSet(SecurityAction.LinkDemand, Name = "FullTrust")]
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public static AdjustPrivilegeResult EnablePrivilege(this AccessTokenHandle accessTokenHandle, Privilege privilege) => Privileges.EnablePrivilege(accessTokenHandle, privilege);
 
         /// <summary>Enables the specified <see cref="Privilege"/> on a <see cref="Process"/>.</summary>
@@ -193,8 +190,7 @@ namespace ProcessPrivileges
         ///     <para>If you are adjusting multiple privileges on a process, consider using <see cref="EnablePrivilege(AccessTokenHandle, Privilege)"/> with an access token handle for the process.</para>
         ///     <para>The caller must have permission to query and adjust token privileges on the target process.</para>
         /// </remarks>
-        [MethodImpl(MethodImplOptions.Synchronized),
-        PermissionSet(SecurityAction.LinkDemand, Name = "FullTrust")]
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public static AdjustPrivilegeResult EnablePrivilege(this Process process, Privilege privilege)
         {
             using (var accessTokenHandle = new AccessTokenHandle(
@@ -213,8 +209,7 @@ namespace ProcessPrivileges
         /// <remarks>
         ///     <para>The caller must have permission to acquire an access token handle with all access rights.</para>
         /// </remarks>
-        [MethodImpl(MethodImplOptions.Synchronized),
-        PermissionSet(SecurityAction.LinkDemand, Name = "FullTrust")]
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public static AccessTokenHandle GetAccessTokenHandle(this Process process) => GetAccessTokenHandle(process, TokenAccessRights.AllAccess);
 
         /// <summary>Gets an access token handle for a <see cref="Process"/>.</summary>
@@ -230,9 +225,8 @@ namespace ProcessPrivileges
         ///     <para>To enable, disable or remove a permission, the access token handle must have permission to query and adjust token privileges:</para>
         ///     <c>TokenAccessRights.AdjustPrivileges | TokenAccessRights.Query</c>
         /// </remarks>
-        [MethodImpl(MethodImplOptions.Synchronized),
-        PermissionSet(SecurityAction.LinkDemand, Name = "FullTrust")]
-        public static AccessTokenHandle GetAccessTokenHandle(this Process process, TokenAccessRights tokenAccessRights) => new AccessTokenHandle(new ProcessHandle(process.Handle, false), tokenAccessRights);
+        [MethodImpl(MethodImplOptions.Synchronized)]
+        public static AccessTokenHandle GetAccessTokenHandle(this Process process, TokenAccessRights tokenAccessRights) => new(new ProcessHandle(process.Handle, false), tokenAccessRights);
 
         /// <summary>Gets the attributes for a <see cref="Privilege"/> on a <see cref="Process"/>.</summary>
         /// <param name="accessTokenHandle">The <see cref="AccessTokenHandle"/> for a <see cref="Process"/> on which the operation should be performed.</param>
@@ -244,8 +238,7 @@ namespace ProcessPrivileges
         ///     <para>Consider using <see cref="GetPrivilegeState(AccessTokenHandle, Privilege)"/> as it avoids the need to work with a flags based enumerated type.</para>
         ///     <para>The caller must have permission to query token privileges on the target process.</para>
         /// </remarks>
-        [MethodImpl(MethodImplOptions.Synchronized),
-        PermissionSet(SecurityAction.LinkDemand, Name = "FullTrust")]
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public static PrivilegeAttributes GetPrivilegeAttributes(this AccessTokenHandle accessTokenHandle, Privilege privilege) => Privileges.GetPrivilegeAttributes(privilege, GetPrivileges(accessTokenHandle));
 
         /// <summary>Gets the attributes for a <see cref="Privilege"/> on a <see cref="Process"/>.</summary>
@@ -258,8 +251,7 @@ namespace ProcessPrivileges
         ///     <para>Consider using <see cref="GetPrivilegeState(Process, Privilege)"/> as it avoids the need to work with a flags based enumerated type.</para>
         ///     <para>The caller must have permission to query token privileges on the target process.</para>
         /// </remarks>
-        [MethodImpl(MethodImplOptions.Synchronized),
-        PermissionSet(SecurityAction.LinkDemand, Name = "FullTrust")]
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public static PrivilegeAttributes GetPrivilegeAttributes(this Process process, Privilege privilege) => Privileges.GetPrivilegeAttributes(privilege, GetPrivileges(process));
 
         /// <summary>Gets the privileges and associated attributes from a <see cref="Process"/>.</summary>
@@ -271,8 +263,7 @@ namespace ProcessPrivileges
         ///     <para>Consider using <see cref="GetPrivilegeState(PrivilegeAttributes)"/> on attributes within the collection as it avoids the need to work with a flags based enumerated type.</para>
         ///     <para>The caller must have permission to query token privileges on the target process.</para>
         /// </remarks>
-        [MethodImpl(MethodImplOptions.Synchronized),
-        PermissionSet(SecurityAction.LinkDemand, Name = "FullTrust")]
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public static PrivilegeAndAttributesCollection GetPrivileges(this AccessTokenHandle accessTokenHandle) => Privileges.GetPrivileges(accessTokenHandle);
 
         /// <summary>Gets the privileges and associated attributes from a <see cref="Process"/>.</summary>
@@ -284,8 +275,7 @@ namespace ProcessPrivileges
         ///     <para>Consider using <see cref="GetPrivilegeState(PrivilegeAttributes)"/> method on attributes within the collection as it avoids the need to work with a flags based enumerated type.</para>
         ///     <para>The caller must have permission to query token privileges on the target process.</para>
         /// </remarks>
-        [MethodImpl(MethodImplOptions.Synchronized),
-        PermissionSet(SecurityAction.LinkDemand, Name = "FullTrust")]
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public static PrivilegeAndAttributesCollection GetPrivileges(this Process process)
         {
             using (var accessTokenHandle = new AccessTokenHandle(
@@ -306,8 +296,7 @@ namespace ProcessPrivileges
         ///     <para>Derives <see cref="GetPrivilegeAttributes(AccessTokenHandle, Privilege)"/> to establish the <see cref="PrivilegeState"/> of a <see cref="Privilege"/>.</para>
         ///     <para>The caller must have permission to query token privileges on the target process.</para>
         /// </remarks>
-        [MethodImpl(MethodImplOptions.Synchronized),
-        PermissionSet(SecurityAction.LinkDemand, Name = "FullTrust")]
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public static PrivilegeState GetPrivilegeState(this AccessTokenHandle accessTokenHandle, Privilege privilege) => GetPrivilegeState(GetPrivilegeAttributes(accessTokenHandle, privilege));
 
         /// <summary>Gets the state of a <see cref="Privilege"/>.</summary>
@@ -320,8 +309,7 @@ namespace ProcessPrivileges
         ///     <para>Derives <see cref="GetPrivilegeAttributes(AccessTokenHandle, Privilege)"/> to establish the <see cref="PrivilegeState"/> of a <see cref="Privilege"/>.</para>
         ///     <para>The caller must have permission to query token privileges on the target process.</para>
         /// </remarks>
-        [MethodImpl(MethodImplOptions.Synchronized),
-        PermissionSet(SecurityAction.LinkDemand, Name = "FullTrust")]
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public static PrivilegeState GetPrivilegeState(this Process process, Privilege privilege) => GetPrivilegeState(GetPrivilegeAttributes(process, privilege));
 
         /// <summary>Gets the state of a <see cref="Privilege"/>.</summary>
@@ -355,8 +343,7 @@ namespace ProcessPrivileges
         /// <exception cref="Win32Exception">Thrown when an underlying Win32 function call does not succeed.</exception>
         /// <permission cref="SecurityAction.LinkDemand">Requires the immediate caller to have FullTrust.</permission>
         /// <remarks>The caller must have permission to query and adjust token privileges on the target process.</remarks>
-        [MethodImpl(MethodImplOptions.Synchronized),
-        PermissionSet(SecurityAction.LinkDemand, Name = "FullTrust")]
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public static AdjustPrivilegeResult RemovePrivilege(this AccessTokenHandle accessTokenHandle, Privilege privilege) => Privileges.RemovePrivilege(accessTokenHandle, privilege);
 
         /// <summary>Removes the specified <see cref="Privilege"/> from a <see cref="Process"/>.</summary>
@@ -372,8 +359,7 @@ namespace ProcessPrivileges
         ///     <para>If you are adjusting multiple privileges on a process, consider using <see cref="RemovePrivilege(AccessTokenHandle, Privilege)"/> with an access token handle for the process.</para>
         ///     <para>The caller must have permission to query and adjust token privileges on the target process.</para>
         /// </remarks>
-        [MethodImpl(MethodImplOptions.Synchronized),
-        PermissionSet(SecurityAction.LinkDemand, Name = "FullTrust")]
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public static AdjustPrivilegeResult RemovePrivilege(this Process process, Privilege privilege)
         {
             using (var accessTokenHandle = new AccessTokenHandle(
